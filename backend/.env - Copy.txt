@@ -1,0 +1,18 @@
+# PostgreSQL connection string, e.g.
+# postgres://user:password@host:5432/hungerlink
+# On most managed Postgres providers (Render, Railway, Supabase, Neon, RDS)
+# you'll also need: ?sslmode=require
+DATABASE_URL= postgresql://neondb_owner:npg_UTp10FVucgvJ@ep-damp-paper-axoy9ah0-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+# Secret used to sign JWTs. Generate a strong random value, e.g.:
+#   node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+JWT_SECRET=banana72xyz
+# How long issued tokens stay valid
+JWT_EXPIRES_IN=7d
+
+# Port the API listens on
+PORT=4000
+
+# Comma-separated list of allowed frontend origins for CORS
+# e.g. http://localhost:5173,https://your-frontend.vercel.app
+CORS_ORIGIN=http://localhost:5173

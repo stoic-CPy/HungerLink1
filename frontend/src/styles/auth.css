@@ -1,0 +1,582 @@
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #222222;
+}
+
+
+/* =====================================================
+   WELCOME PAGE
+===================================================== */
+
+.welcome-page {
+    min-height: 100vh;
+    width: 100%;
+    background: #ffffff;
+}
+
+.welcome-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 40px 35px 60px;
+}
+
+
+/* =====================================================
+   WELCOME LOGO
+===================================================== */
+
+.welcome-logo {
+    width: 150px;
+    height: 150px;
+
+    object-fit: cover;
+
+    border-radius: 30px;
+
+    display: block;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =====================================================
+   LOGO FALLBACK
+===================================================== */
+
+.logo-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #075c29;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 48px;
+    letter-spacing: 1px;
+}
+
+
+/* =====================================================
+   WELCOME TITLE
+===================================================== */
+
+.welcome-title {
+    margin-top: 22px;
+
+    text-align: center;
+
+    color: #075c29;
+
+    font-size: clamp(40px, 7vw, 70px);
+
+    font-weight: 800;
+}
+
+.tagline {
+    margin-top: 10px;
+
+    text-align: center;
+
+    color: #2d8138;
+
+    font-size: 20px;
+}
+
+
+/* =====================================================
+   CONTINUE
+===================================================== */
+
+.continue-box {
+    width: 100%;
+    max-width: 850px;
+
+    margin: 35px auto 0;
+
+    padding: 24px;
+
+    background: #075c29;
+
+    border-radius: 18px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.continue-box:hover {
+    background: #064c22;
+
+    transform: translateY(-2px);
+}
+
+.continue-box h2 {
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.continue-box p {
+    margin-top: 7px;
+    color: #e8f7e9;
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   DETAILS
+===================================================== */
+
+.details-section {
+    margin-top: 45px;
+}
+
+.details-title {
+    color: #075c29;
+
+    font-size: 25px;
+
+    font-weight: bold;
+
+    border-bottom: 2px solid #dceede;
+
+    padding-bottom: 10px;
+}
+
+.detail-subtitle {
+    margin-top: 28px;
+
+    color: #075c29;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+.business-subtitle {
+    margin-top: 24px;
+
+    color: #2d8138;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+.details-section p {
+    margin-top: 13px;
+
+    max-width: 900px;
+
+    color: #555555;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   FORM PAGE
+===================================================== */
+
+.form-page {
+    min-height: 100vh;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 20px;
+
+    background: #f5fff5;
+}
+
+.register-page {
+    align-items: flex-start;
+
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.form-card {
+    width: 100%;
+
+    max-width: 430px;
+
+    background: #ffffff;
+
+    padding: 35px;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.register-card {
+    max-width: 500px;
+}
+
+
+/* =====================================================
+   FORM LOGO
+===================================================== */
+
+.form-logo {
+    width: 110px;
+    height: 110px;
+
+    object-fit: cover;
+
+    border-radius: 22px;
+
+    display: block;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =====================================================
+   HEADING
+===================================================== */
+
+.form-card h1 {
+    text-align: center;
+
+    color: #075c29;
+
+    margin-top: 18px;
+}
+
+.form-subtitle {
+    text-align: center;
+
+    color: #777777;
+
+    margin: 8px 0 25px;
+}
+
+
+/* =====================================================
+   LABEL
+===================================================== */
+
+label {
+    display: block;
+
+    margin-top: 15px;
+
+    margin-bottom: 7px;
+
+    color: #315238;
+
+    font-weight: bold;
+}
+
+.required {
+    color: red;
+
+    font-weight: bold;
+}
+
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 1px solid #cddccd;
+
+    border-radius: 10px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #218b31;
+
+    box-shadow:
+        0 0 0 3px rgba(33, 139, 49, 0.1);
+}
+
+
+/* =====================================================
+   ACCOUNT TYPE
+===================================================== */
+
+.account-row {
+    display: flex;
+
+    gap: 10px;
+}
+
+.account-button {
+    flex: 1;
+
+    height: 52px;
+
+    border: 2px solid #cddccd;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #315238;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.account-button:hover {
+    border-color: #218b31;
+}
+
+.account-button.selected {
+    background: #218b31;
+
+    border-color: #218b31;
+
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   PINCODE STATUS (auto city/state lookup)
+===================================================== */
+
+.pincode-status {
+    margin-top: 7px;
+
+    color: #218b31;
+
+    font-size: 13px;
+}
+
+.pincode-status-error {
+    color: red;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.error {
+    color: red;
+
+    font-size: 13px;
+
+    margin-top: 7px;
+
+    min-height: 18px;
+}
+
+
+/* =====================================================
+   PASSWORD
+===================================================== */
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    padding-right: 50px;
+}
+
+.eye-button {
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    font-size: 18px;
+}
+
+
+/* =====================================================
+   FORGOT PASSWORD
+===================================================== */
+
+.forgot-password {
+    display: block;
+
+    margin-top: 10px;
+
+    text-align: right;
+
+    color: #218b31;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   MAIN BUTTON
+===================================================== */
+
+.main-button {
+    width: 100%;
+
+    padding: 15px;
+
+    margin-top: 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #218b31;
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.main-button:hover {
+    background: #176f25;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message {
+    text-align: center;
+
+    color: #218b31;
+
+    margin-top: 12px;
+
+    min-height: 20px;
+}
+
+
+/* =====================================================
+   LOGIN / REGISTER LINK
+===================================================== */
+
+.bottom-link {
+    margin-top: 20px;
+
+    text-align: center;
+
+    color: #777777;
+}
+
+.bottom-link a {
+    color: #218b31;
+
+    font-weight: bold;
+
+    text-decoration: none;
+}
+
+.bottom-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .welcome-container {
+        padding: 30px 20px 50px;
+    }
+
+    .welcome-logo {
+        width: 110px;
+        height: 110px;
+    }
+
+    .welcome-title {
+        font-size: 40px;
+    }
+
+    .details-title {
+        font-size: 22px;
+    }
+
+    .detail-subtitle {
+        font-size: 18px;
+    }
+
+    .business-subtitle {
+        font-size: 17px;
+    }
+
+    .details-section p {
+        font-size: 16px;
+
+        line-height: 1.7;
+    }
+
+    .form-card {
+        padding: 25px;
+    }
+
+    .form-logo {
+        width: 100px;
+        height: 100px;
+    }
+}
