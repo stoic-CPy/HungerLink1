@@ -41,7 +41,8 @@ export default function AddFood() {
 
     setSubmitting(true);
     try {
-      await addDonation(form);
+      const donationDateISO = new Date(`${donationDate}:00+05:30`).toISOString();
+      await addDonation({ ...form, donationDate: donationDateISO });
       setForm(initialForm);
       navigate("/donor/my-donations");
     } catch (err) {
