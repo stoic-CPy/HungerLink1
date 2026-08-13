@@ -489,6 +489,16 @@ body {
   font-size: 15px;
 }
 
+.pincode-status {
+  margin-top: 7px;
+  color: #218b31;
+  font-size: 13px;
+}
+
+.pincode-status-error {
+  color: red;
+}
+
 .edit-profile {
   width: 100%;
   border: none;
