@@ -17,6 +17,10 @@ export default function DonorLayout({ children }) {
 
   const toggleSidebar = () => setCollapsed((prev) => !prev);
 
+  const closeSidebarOnOutsideClick = () => {
+    if (!collapsed) setCollapsed(true);
+  };
+
   return (
     <>
       <header className="brand-header">
@@ -65,7 +69,12 @@ export default function DonorLayout({ children }) {
         </NavLink>
       </aside>
 
-      <main className={`main${collapsed ? " sidebar-collapsed" : ""}`}>{children}</main>
+      <main
+        className={`main${collapsed ? " sidebar-collapsed" : ""}`}
+        onClick={closeSidebarOnOutsideClick}
+      >
+        {children}
+      </main>
     </>
   );
 }
