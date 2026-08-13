@@ -3,13 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDonations } from "../../context/DonationsContext";
 
 const initialForm = {
-  restaurantName: "",
   foodName: "",
   quantity: "",
   donationDate: "",
-  pickupAddress: "",
 };
-
 export default function AddFood() {
   const [form, setForm] = useState(initialForm);
   const [submitting, setSubmitting] = useState(false);
@@ -26,15 +23,9 @@ export default function AddFood() {
     event.preventDefault();
     setError("");
 
-    const { restaurantName, foodName, quantity, donationDate, pickupAddress } = form;
+const { foodName, quantity, donationDate } = form;
 
-    if (
-      restaurantName.trim() === "" ||
-      foodName.trim() === "" ||
-      quantity.trim() === "" ||
-      donationDate === "" ||
-      pickupAddress.trim() === ""
-    ) {
+    if (foodName.trim() === "" || quantity.trim() === "" || donationDate === "") {
       setError("Please fill all donation details.");
       return;
     }
@@ -74,19 +65,7 @@ export default function AddFood() {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="restaurantName">Restaurant / Hotel Name</label>
-            <input
-              type="text"
-              id="restaurantName"
-              placeholder="Enter restaurant / hotel name"
-              value={form.restaurantName}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
+        <div className="form-group">
             <label htmlFor="foodName">Food Name</label>
             <input
               type="text"
@@ -121,16 +100,9 @@ export default function AddFood() {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="pickupAddress">Pickup Address</label>
-            <textarea
-              id="pickupAddress"
-              placeholder="Enter complete pickup address"
-              value={form.pickupAddress}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <p className="form-hint">
+            Restaurant name and pickup address will be taken automatically from your saved profile.
+          </p>
 
           {error && <div className="error">{error}</div>}
 
