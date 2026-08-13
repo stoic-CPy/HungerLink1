@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
 import "../../styles/ngoDashboard.css";
 
+// Free, public India Post pincode lookup - no API key needed.
+const PINCODE_LOOKUP_URL = "https://api.postalpincode.in/pincode/";
+
 function normalize(row) {
   return {
     organizationName: row.organization_name,
@@ -10,6 +13,9 @@ function normalize(row) {
     email: row.email,
     phone: row.phone,
     address: row.address,
+    district: row.city,
+    state: row.state,
+    pincode: row.pincode,
     establishmentYear: row.establishment_year,
   };
 }
@@ -22,6 +28,8 @@ export default function NgoAdminProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  // "idle" | "loading" | "success" | "error"
+  const [pincodeStatus, setPincodeStatus] = useState("idle");
 
   useEffect(() => {
     api
@@ -53,11 +61,59 @@ export default function NgoAdminProfile() {
     setIsEditing(true);
   };
 
+  // Auto-fill District / State as soon as a valid 6-digit pincode is entered
+  // while editing (same lookup used on the registration page).
+  useEffect(() => {
+    if (!isEditing || !draft) return;
+    const pincode = draft.pincode;
+
+    if (!/^[0-9]{6}$/.test(pincode || "")) {
+      setPincodeStatus("idle");
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const timer = setTimeout(async () => {
+      setPincodeStatus("loading");
+
+      try {
+        const response = await fetch(`${PINCODE_LOOKUP_URL}${pincode}`, {
+          signal: controller.signal,
+        });
+        const data = await response.json();
+        const result = data && data[0];
+        const postOffice = result?.PostOffice?.[0];
+
+        if (result?.Status === "Success" && postOffice) {
+          setDraft((prev) => ({
+            ...prev,
+            district: postOffice.District,
+            state: postOffice.State,
+          }));
+          setPincodeStatus("success");
+        } else {
+          setPincodeStatus("error");
+        }
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setPincodeStatus("error");
+        }
+      }
+    }, 500);
+
+    return () => {
+      controller.abort();
+      clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [draft?.pincode, isEditing]);
+
   const handleSave = async () => {
     setSaving(true);
     setError("");
     try {
-      const data = await api.put("/ngo/profile", draft);
+      const data = await api.put("/ngo/profile", { ...draft, city: draft.district });
       setProfile(normalize(data.profile));
       setIsEditing(false);
     } catch (err) {
@@ -118,8 +174,20 @@ export default function NgoAdminProfile() {
                 <strong>{profile.phone}</strong>
               </div>
               <div className="detail">
-                <span>Address</span>
+                <span>Address Line 1</span>
                 <strong>{profile.address}</strong>
+              </div>
+              <div className="detail">
+                <span>District</span>
+                <strong>{profile.district || "—"}</strong>
+              </div>
+              <div className="detail">
+                <span>State</span>
+                <strong>{profile.state || "—"}</strong>
+              </div>
+              <div className="detail">
+                <span>Pincode</span>
+                <strong>{profile.pincode || "—"}</strong>
               </div>
               <div className="detail">
                 <span>Establishment Year</span>
@@ -145,8 +213,45 @@ export default function NgoAdminProfile() {
                 <input value={draft.phone} onChange={handleChange("phone")} />
               </div>
               <div className="detail">
-                <span>Address</span>
+                <span>Address Line 1</span>
                 <input value={draft.address} onChange={handleChange("address")} />
+              </div>
+              <div className="detail">
+                <span>District</span>
+                <input
+                  placeholder="Auto-filled from pincode"
+                  value={draft.district || ""}
+                  onChange={handleChange("district")}
+                />
+              </div>
+              <div className="detail">
+                <span>State</span>
+                <input
+                  placeholder="Auto-filled from pincode"
+                  value={draft.state || ""}
+                  onChange={handleChange("state")}
+                />
+              </div>
+              <div className="detail">
+                <span>Pincode</span>
+                <input
+                  maxLength={6}
+                  pattern="[0-9]{6}"
+                  inputMode="numeric"
+                  value={draft.pincode || ""}
+                  onChange={handleChange("pincode")}
+                />
+                {pincodeStatus === "loading" && (
+                  <div className="pincode-status">Fetching district / state...</div>
+                )}
+                {pincodeStatus === "error" && (
+                  <div className="pincode-status pincode-status-error">
+                    Couldn&apos;t find that pincode. Please enter district / state manually.
+                  </div>
+                )}
+                {pincodeStatus === "success" && (
+                  <div className="pincode-status">District / state filled automatically.</div>
+                )}
               </div>
               <div className="detail">
                 <span>Establishment Year</span>
