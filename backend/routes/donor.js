@@ -73,15 +73,26 @@ router.get("/donations", async (req, res) => {
   }
 });
 
-// POST /api/donor/donations - create a donation
+// POST /api/donor/donations - create a donation (restaurant name & address auto-filled from profile)
 router.post("/donations", async (req, res) => {
-  const { restaurantName, foodName, quantity, donationDate, pickupAddress } = req.body;
+  const { foodName, quantity, donationDate } = req.body;
 
-  if (!restaurantName || !foodName || !quantity || !donationDate || !pickupAddress) {
+  if (!foodName || !quantity || !donationDate) {
     return res.status(400).json({ error: "Please fill all donation details." });
   }
 
   try {
+    const profileResult = await pool.query(
+      `SELECT organization_name, address FROM donor_profiles WHERE user_id = $1`,
+      [req.user.id]
+    );
+    if (profileResult.rows.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Please complete your profile (organization name & address) before adding food." });
+    }
+    const { organization_name: restaurantName, address: pickupAddress } = profileResult.rows[0];
+
     const result = await pool.query(
       `INSERT INTO donations
         (donor_id, restaurant_name, food_name, quantity, donation_date, pickup_address, status)
