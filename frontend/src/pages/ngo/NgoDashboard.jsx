@@ -82,7 +82,7 @@ function Sidebar({ collapsed, activePage, onHelp, onSettings, onLogout, onToggle
   );
 }
 
-function DonationCard({ donation, onAccept, onComplete, busy }) {
+function DonationCard({ donation, onAccept, onCancel, onComplete, busy }) {
   return (
     <div className="donation-card">
       <div className="restaurant-name">■ {donation.restaurant}</div>
@@ -132,15 +132,20 @@ function DonationCard({ donation, onAccept, onComplete, busy }) {
       )}
 
       {donation.status === "Accepted" && donation.acceptedByMe && (
-        <button className="accept-btn" onClick={() => onComplete(donation.id)} disabled={busy}>
-          {busy ? "Updating..." : "Mark as Collected"}
-        </button>
+        <div className="donation-actions">
+          <button className="accept-btn" onClick={() => onComplete(donation.id)} disabled={busy}>
+            {busy ? "Updating..." : "Mark as Collected"}
+          </button>
+          <button className="cancel-btn" onClick={() => onCancel(donation.id)} disabled={busy}>
+            {busy ? "Updating..." : "Cancel"}
+          </button>
+        </div>
       )}
     </div>
   );
 }
 
-function DashboardPage({ donations, loading, error, onAccept, onComplete, busyId }) {
+function DashboardPage({ donations, loading, error, onAccept, onCancel, onComplete, busyId }) {
   return (
     <section className="page show">
       <div className="topbar">
@@ -154,11 +159,12 @@ function DashboardPage({ donations, loading, error, onAccept, onComplete, busyId
       {loading && <p>Loading donations...</p>}
       {!loading && donations.length === 0 && <p>No donations available right now.</p>}
 
-      {donations.map((donation) => (
+  {donations.map((donation) => (
         <DonationCard
           key={donation.id}
           donation={donation}
           onAccept={onAccept}
+          onCancel={onCancel}
           onComplete={onComplete}
           busy={busyId === donation.id}
         />
@@ -263,6 +269,20 @@ export default function NgoDashboard() {
     }
   };
 
+  const handleCancel = async (id) => {
+    setBusyId(id);
+    try {
+      await api.post(`/ngo/donations/${id}/cancel`, {});
+      showToast("Donation cancelled");
+      await loadDonations();
+    } catch (err) {
+      showToast(err.message);
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+
   const handleComplete = async (id) => {
     setBusyId(id);
     try {
@@ -308,6 +328,7 @@ export default function NgoDashboard() {
             loading={loading}
             error={error}
             onAccept={handleAccept}
+            onCancel={handleCancel}
             onComplete={handleComplete}
             busyId={busyId}
           />
