@@ -807,6 +807,18 @@ body {
     display: block;
 }
 
+.pincode-status {
+    margin-top: 7px;
+
+    color: #218b31;
+
+    font-size: 13px;
+}
+
+.pincode-status-error {
+    color: red;
+}
+
 
 /* PROFILE BUTTONS */
 
