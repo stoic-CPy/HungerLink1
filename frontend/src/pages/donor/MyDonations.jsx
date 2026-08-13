@@ -101,8 +101,10 @@ export default function MyDonations() {
                           {donation.status}
                         </span>
                       </td>
-                      <td>
-                        {isSelected ? (
+                     <td>
+                        {donation.status !== "Pending" ? (
+                          <span className="row-hint">Cannot remove after acceptance</span>
+                        ) : isSelected ? (
                           <button
                             type="button"
                             className="remove-donation-btn"
