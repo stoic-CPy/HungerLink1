@@ -96,15 +96,17 @@ router.post("/donations", async (req, res) => {
   }
 });
 
-// DELETE /api/donor/donations/:id - remove own donation (any status, matches original UI)
+// DELETE /api/donor/donations/:id - remove own donation (only allowed while still Pending)
 router.delete("/donations/:id", async (req, res) => {
   try {
     const result = await pool.query(
-      `DELETE FROM donations WHERE id = $1 AND donor_id = $2 RETURNING id`,
+      `DELETE FROM donations WHERE id = $1 AND donor_id = $2 AND status = 'Pending' RETURNING id`,
       [req.params.id, req.user.id]
     );
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Donation not found." });
+      return res
+        .status(409)
+        .json({ error: "This donation can no longer be removed — it has already been accepted or completed." });
     }
     return res.json({ success: true });
   } catch (err) {
