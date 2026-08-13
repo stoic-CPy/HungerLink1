@@ -99,6 +99,28 @@ router.post("/donations/:id/accept", async (req, res) => {
   }
 });
 
+// POST /api/ngo/donations/:id/cancel - undo acceptance, only allowed while still Accepted
+router.post("/donations/:id/cancel", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `UPDATE donations
+       SET status = 'Pending', accepted_by_ngo_id = NULL, updated_at = now()
+       WHERE id = $1 AND accepted_by_ngo_id = $2 AND status = 'Accepted'
+       RETURNING *`,
+      [req.params.id, req.user.id]
+    );
+    if (result.rows.length === 0) {
+      return res
+        .status(409)
+        .json({ error: "This donation cannot be cancelled (already completed or not accepted by you)." });
+    }
+    return res.json({ donation: result.rows[0] });
+  } catch (err) {
+    console.error("Cancel donation error:", err);
+    return res.status(500).json({ error: "Could not cancel donation." });
+  }
+});
+
 // POST /api/ngo/donations/:id/complete - mark a donation this NGO accepted as collected
 router.post("/donations/:id/complete", async (req, res) => {
   try {
