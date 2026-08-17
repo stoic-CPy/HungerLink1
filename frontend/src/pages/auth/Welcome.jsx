@@ -21,7 +21,7 @@ export default function Welcome() {
         <p className="tagline">Reduce Waste. Share Hope.</p>
 
         <div className="continue-box" onClick={openLogin}>
-          <h2>Tap Anywhere to Continue</h2>
+          <h2>Tap here to Continue</h2>
           <p>Go to Login</p>
         </div>
 
